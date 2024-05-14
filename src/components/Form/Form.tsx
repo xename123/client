@@ -3,12 +3,19 @@ import { NODE_URL } from '../../api/config';
 import s from "./RegistrationForm.module.scss";
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import { setJWT } from '../../api/api-utils';
+import Snackbar from '../Snackbar/Snackbar';
 
-const RegistrationForm = () => {
+interface RegistrationFormnProps {
+    setUser: Function;
+}
+
+
+const RegistrationForm: React.FC<RegistrationFormnProps> = ({ setUser }) => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
+    const [message, setMessage] = useState('');
 
     let navigate = useNavigate();
 
@@ -17,13 +24,20 @@ const RegistrationForm = () => {
         try {
             const response = await axios.post(`${NODE_URL}/auth/register`, { username, email, password });
             if (response.status === 200) {
-                alert("Regist is success")
-
+                setMessage("Regist is success")
+                const response = await axios.post(`${NODE_URL}/auth/login`, {
+                    email,
+                    password,
+                });
+                setTimeout(() => {
+                    setUser({ username, email })
+                    navigate('/')
+                }, 1000)
+                setJWT(response.data.token);
             }
-            navigate('/login')
         } catch (error) {
             console.error('Error during registration:', error);
-            setErrorMessage('Error during registration. Please try again.');
+            setMessage('Error during registration. Please try again.');
         }
     };
 
@@ -38,8 +52,7 @@ const RegistrationForm = () => {
             </form>
             <Link className={s.button} to="/">Login</Link>
 
-
-            {errorMessage && <p>{errorMessage}</p>}
+            {message && <Snackbar message={message} />}
         </div>
     );
 };

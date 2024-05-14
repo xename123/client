@@ -4,6 +4,7 @@ import s from './NewCocktailForm.module.scss'
 import { postData } from '../../api/api-utils';
 import { NODE_URL } from '../../api/config';
 import { useNavigate } from 'react-router-dom';
+import Snackbar from '../Snackbar/Snackbar';
 
 
 const NewCocktailForm: React.FC = () => {
@@ -13,6 +14,7 @@ const NewCocktailForm: React.FC = () => {
     instructions: '',
     image: '',
   });
+  const [message, setMessage] = useState('')
   const navigation = useNavigate()
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -23,11 +25,13 @@ const NewCocktailForm: React.FC = () => {
     e.preventDefault();
     console.log(formData)
     if (!formData.name || !formData.ingredients || !formData.instructions || !formData.image) {
-      alert('Please fill in all fields.');
+      setMessage('Please fill in all fields.');
     } else {
       postData(`${NODE_URL}/drinks`, formData)
-      alert('Added new Coctail')
-      navigation('/')
+      setMessage('Added new Coctail')
+      setTimeout(() => {
+        navigation('/')
+      }, 1000)
 
     }
 
@@ -47,6 +51,7 @@ const NewCocktailForm: React.FC = () => {
         <input className={s.input} type="url" name="image" placeholder='https://www.www' value={formData.image} onChange={handleChange} />
         <button className={s.button} type="submit">Submit</button>
       </form>
+      {message && <Snackbar message={message} />}
     </div>
   );
 };

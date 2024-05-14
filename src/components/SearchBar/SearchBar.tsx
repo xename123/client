@@ -42,7 +42,11 @@ const SearchBar: React.FC<SearchBar> = ({ openResult, setOpenResult }) => {
       <input
         type="text"
         value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
+        onInput={(e: React.ChangeEvent<HTMLInputElement>) => {
+          setSearchTerm(e.target.value)
+          setOpenResult(true)
+          handleSearch()
+        }}
         placeholder="Search cocktails..."
       />
       <button

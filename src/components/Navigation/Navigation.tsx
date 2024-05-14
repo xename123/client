@@ -9,6 +9,7 @@ import SearchBar from '../SearchBar/SearchBar';
 import s from './Navigation.module.scss'
 import { getData, isResponseOk, removeJWT } from '../../api/api-utils';
 import { BASE_URL, NODE_URL } from '../../api/config';
+import Snackbar from '../Snackbar/Snackbar';
 
 
 register();
@@ -72,6 +73,7 @@ const Navigation: React.FC<NavigationProps> = ({ user }) => {
       <Link to={`/add`}>
         Add new Drink
       </Link>
+
     </div>
   );
 };

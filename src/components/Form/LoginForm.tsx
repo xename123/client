@@ -5,12 +5,13 @@ import { NODE_URL } from "../../api/config";
 import s from "./RegistrationForm.module.scss";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import Snackbar from "../Snackbar/Snackbar";
 
 const Login = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [message, setMessage] = useState("");
 
   const navigate = useNavigate()
   const handleLogin = async (e: React.ChangeEvent<any>) => {
@@ -20,12 +21,15 @@ const Login = () => {
         email,
         password,
       });
-      navigate('/')
-      navigate(0)
+      setMessage('Login success')
+      setTimeout(() => {
+        navigate('/')
+        navigate(0)
+      }, 1000)
       setJWT(response.data.token);
     } catch (error) {
       console.error("Login error:", error);
-      setErrorMessage(
+      setMessage(
         "Incorrect credentials. Please try again."
       );
     }
@@ -54,7 +58,7 @@ const Login = () => {
         <button className={s.button} type="submit">Login</button>
       </form>
       <Link className={s.button} to="/register">Register</Link>
-      {errorMessage && <p>{errorMessage}</p>}
+      {message && <Snackbar message={message} />}
     </div>
   );
 };

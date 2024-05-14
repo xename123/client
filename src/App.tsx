@@ -48,7 +48,7 @@ const App: React.FC = () => {
             <Route path="/add" element={<NewCocktailForm />} />
           </> : <>
             <Route path="/" element={<Login />} />
-            <Route path="/register" element={<RegistrationForm />} />
+            <Route path="/register" element={<RegistrationForm setUser={setUser} />} />
           </>
           }
 
