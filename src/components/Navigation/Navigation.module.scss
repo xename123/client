@@ -1,0 +1,27 @@
+.navigation {
+    text-align: center;
+    margin-bottom: 20px;
+    &__top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    &__item {
+        > img {
+            max-width: 100%;
+        }
+    }
+}
+.button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
+    &:hover {
+        background-color: #0056b3;
+    }
+    margin-right: 10px;
+}
