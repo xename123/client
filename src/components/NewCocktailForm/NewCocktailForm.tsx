@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import s from './NewCocktailForm.module.scss'
 import { postData } from '../../api/api-utils';
 import { NODE_URL } from '../../api/config';
+import { useNavigate } from 'react-router-dom';
 
 
 const NewCocktailForm: React.FC = () => {
@@ -12,7 +13,7 @@ const NewCocktailForm: React.FC = () => {
     instructions: '',
     image: '',
   });
-
+  const navigation = useNavigate()
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -25,6 +26,8 @@ const NewCocktailForm: React.FC = () => {
       alert('Please fill in all fields.');
     } else {
       postData(`${NODE_URL}/drinks`, formData)
+      alert('Added new Coctail')
+      navigation('/')
 
     }
 

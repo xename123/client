@@ -20,15 +20,18 @@ const App: React.FC = () => {
   useEffect(() => {
     const token = getJWT()
     const checkAuth = async () => {
-      try {
-        const response = await axios.get(`${NODE_URL}/auth/me`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setUser(response.data.user);
-      } catch (error) {
-        console.error('Error checking authentication:', error);
+      if (token) {
+
+        try {
+          const response = await axios.get(`${NODE_URL}/auth/me`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          setUser(response.data.user);
+        } catch (error) {
+          console.error('Error checking authentication:', error);
+        }
       }
     };
     checkAuth();
@@ -39,11 +42,16 @@ const App: React.FC = () => {
     <Router>
       <div className='montserrat container'>
         <Routes>
-          <Route path="/" element={<Navigation user={user} />} />
-          <Route path="/cocktail/:id" element={<CocktailDetails />} />
-          <Route path="/add" element={<NewCocktailForm />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<RegistrationForm />} />
+          {user ? <>
+            <Route path="/" element={<Navigation user={user} />} />
+            <Route path="/cocktail/:id" element={<CocktailDetails />} />
+            <Route path="/add" element={<NewCocktailForm />} />
+          </> : <>
+            <Route path="/" element={<Login />} />
+            <Route path="/register" element={<RegistrationForm />} />
+          </>
+          }
+
         </Routes>
       </div>
     </Router>

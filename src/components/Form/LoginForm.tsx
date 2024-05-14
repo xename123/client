@@ -1,10 +1,10 @@
-import React, { useContext, useState } from "react";
-import { authorize, setJWT } from "../../api/api-utils";
+import React, { useState } from "react";
+import { setJWT } from "../../api/api-utils";
 import { NODE_URL } from "../../api/config";
 
 import s from "./RegistrationForm.module.scss";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
 
@@ -53,7 +53,7 @@ const Login = () => {
         />
         <button className={s.button} type="submit">Login</button>
       </form>
-
+      <Link className={s.button} to="/register">Register</Link>
       {errorMessage && <p>{errorMessage}</p>}
     </div>
   );

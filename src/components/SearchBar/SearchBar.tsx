@@ -10,6 +10,7 @@ interface SearchBar {
   setOpenResult: Function;
 }
 
+
 const SearchBar: React.FC<SearchBar> = ({ openResult, setOpenResult }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState<any[]>([]);
@@ -19,8 +20,7 @@ const SearchBar: React.FC<SearchBar> = ({ openResult, setOpenResult }) => {
   const handleSearch = async () => {
     const response = await getData(`${BASE_URL}/search.php?s=${searchTerm}`)
     const drinksFromDataBase = await getData(`${NODE_URL}/drinks?name=${searchTerm}`)
-    console.log(drinksFromDataBase)
-    const resArray = response.data.drinks.concat(drinksFromDataBase.data)
+    const resArray = response.data.drinks ? response.data.drinks.concat(drinksFromDataBase.data) : drinksFromDataBase.data
     return isResponseOk(response) ? setSearchResults(resArray || []) : setSearchResults([]);
   };
 
@@ -36,7 +36,6 @@ const SearchBar: React.FC<SearchBar> = ({ openResult, setOpenResult }) => {
       document.removeEventListener('click', handleClickOutside);
     };
   }, []);
-
 
   return (
     <div className={s.bar} ref={searchBarRef}>
@@ -56,12 +55,13 @@ const SearchBar: React.FC<SearchBar> = ({ openResult, setOpenResult }) => {
         Search
       </button>
       <div className={`${s.results} ${openResult ? s['show'] : s['hidden']}`}>
-        {searchResults.map((cocktail) => (
+        {searchResults.length > 0 ? searchResults.map((cocktail) => (
           <Link className={s.result} key={cocktail.idDrink} to={`/cocktail/${cocktail.idDrink}`}>
             <img src={cocktail.strDrinkThumb} alt={cocktail.strDrink} />
             <p>{cocktail.strDrink}</p>
           </Link>
-        ))}
+        )) : <p>Can't find a cocktail</p>}
+        { }
       </div>
     </div>
   );

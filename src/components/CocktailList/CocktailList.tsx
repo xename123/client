@@ -4,7 +4,6 @@ interface Cocktail {
   idDrink: string;
   strDrink: string;
   strDrinkThumb: string;
-  // Add other properties as needed
 }
 
 interface CocktailListProps {

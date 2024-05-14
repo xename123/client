@@ -26,41 +26,6 @@ export const isResponseOk = (response: any): boolean => {
     return !(response instanceof Error);
 };
 
-const normalizeDataObject = (obj: any): any => {
-    let str = JSON.stringify(obj);
-    str = str.replaceAll("_id", "id");
-    const newObj = JSON.parse(str);
-    const result = { ...newObj, category: newObj.categories };
-    return result;
-};
-
-export const normalizeData = (data: any[]): any[] => {
-    return data.map((item) => {
-        return normalizeDataObject(item);
-    });
-};
-
-export const getNormalizedGameDataById = async (url: string, id: string): Promise<any> => {
-    const data = await getData(`${url}/${id}`);
-    return isResponseOk(data) ? normalizeDataObject(data) : data;
-};
-
-export const authorize = async (url: string, data: any): Promise<any> => {
-    try {
-        const response = await fetch(url, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data),
-        });
-        if (response.status !== 200) {
-            throw new Error("Ошибка авторизации");
-        }
-        const result = await response.json();
-        return result;
-    } catch (error) {
-        return error;
-    }
-};
 
 export const setJWT = (jwt: string): void => {
     localStorage.setItem("jwt", jwt);
