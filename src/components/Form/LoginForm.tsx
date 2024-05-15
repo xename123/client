@@ -12,6 +12,8 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [showSnackbar, setShowSnackbar] = useState(false)
+
 
   const navigate = useNavigate()
   const handleLogin = async (e: React.ChangeEvent<any>) => {
@@ -22,16 +24,22 @@ const Login = () => {
         password,
       });
       setMessage('Login success')
+      setShowSnackbar(true)
       setTimeout(() => {
+        setShowSnackbar(false)
         navigate('/')
         navigate(0)
-      }, 1000)
+      }, 1300)
       setJWT(response.data.token);
     } catch (error) {
       console.error("Login error:", error);
       setMessage(
         "Incorrect credentials. Please try again."
       );
+      setShowSnackbar(true)
+      setTimeout(() => {
+        setShowSnackbar(false)
+      }, 1300)
     }
   };
 
@@ -58,7 +66,7 @@ const Login = () => {
         <button className={s.button} type="submit">Login</button>
       </form>
       <Link className={s.button} to="/register">Register</Link>
-      {message && <Snackbar message={message} />}
+      {showSnackbar && <Snackbar message={message} />}
     </div>
   );
 };

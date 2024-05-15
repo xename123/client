@@ -11,12 +11,12 @@ const Snackbar: React.FC<SnackbarProps> = ({ message }) => {
     useEffect(() => {
         const timer = setTimeout(() => {
             setShowSnackbar(false);
-        }, 2000);
+        }, 1000);
 
         return () => {
             clearTimeout(timer);
         };
-    }, []);
+    }, [message]);
 
     return (
         <div className={`${s.snackbar} ${showSnackbar ? s.show : s.hide}`}>

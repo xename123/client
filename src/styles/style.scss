@@ -14,9 +14,25 @@ body {
     padding: 0px 15px;
     margin: 0 auto;
 }
-.wrapper {
-    width: 100vw;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
+.swiper-button-prev,
+.swiper-button-next {
+    background-color: #fff;
+    padding: 5px 13px;
+    border-radius: 50%;
+    transition: all 0.3s ease 0s;
+    @media (any-hover: hover) {
+        &:hover {
+            background-color: #d1d1d1;
+        }
+    }
+    &::after {
+        font-size: 30px !important;
+        transform: translate(-20%);
+    }
+}
+.swiper-button-next {
+    &::after {
+        font-size: 30px !important;
+        transform: translate(20%);
+    }
 }

@@ -9,8 +9,7 @@ interface Cocktail {
   strDrink: string;
   strInstructions: string;
   strDrinkThumb: string;
-  strIngredient1: string;
-  strIngredient2: string;
+  strIngredient: string[];
 }
 
 const CocktailDetails: React.FC = () => {
@@ -21,9 +20,15 @@ const CocktailDetails: React.FC = () => {
     const fetchCocktail = async () => {
       const response = await getData(`${BASE_URL}/lookup.php?i=${id}`)
       const getDrinkFromDataBase = await getData(`${NODE_URL}/drinks/${id}`)
-      const drink = response.data.drinks ? response.data.drinks[0] : getDrinkFromDataBase.data
-      return isResponseOk(response) ? setCocktail(drink) : response;
-    };
+      if (response.status === 200 && response.data.drinks !== null) {
+        const cocktail = response.data.drinks[0]
+        cocktail.strIngredient = [cocktail.strIngredient1, cocktail.strIngredient2, cocktail.strIngredient3, cocktail.strIngredient4, cocktail.strIngredient5, cocktail.strIngredient6, cocktail.strIngredient7, cocktail.strIngredient8, cocktail.strIngredient9, cocktail.strIngredient10, cocktail.strIngredient11, cocktail.strIngredient12, cocktail.strIngredient13, cocktail.strIngredient14, cocktail.strIngredient15]
+        return isResponseOk(response) ? setCocktail(cocktail) : response;
+      } else {
+        return isResponseOk(getDrinkFromDataBase) ? setCocktail(getDrinkFromDataBase.data) : response;
+
+      }
+    }
 
     fetchCocktail();
   }, [id]);
@@ -40,8 +45,10 @@ const CocktailDetails: React.FC = () => {
             <p>{cocktail.strInstructions}</p>
             <h3>Ingredients:</h3>
             <ul className={s.list}>
-              {cocktail.strIngredient1 && <li>{cocktail.strIngredient1}</li>}
-              {cocktail.strIngredient2 && <li>{cocktail.strIngredient2}</li>}
+              {cocktail.strIngredient.map((ingredient) => {
+                if (ingredient === null) return
+                return <li>{ingredient.trim()}</li>
+              })}
             </ul>
           </div >
         )

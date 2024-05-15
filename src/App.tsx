@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Navigation from './components/Navigation/Navigation';
+import NavigationBlock from './components/NavigationBlock/NavigationBlock';
 import CocktailDetails from './components/RecipeDisplay/RecipeDisplay';
 import NewCocktailForm from './components/NewCocktailForm/NewCocktailForm';
 import RegistrationForm from './components/Form/Form';
@@ -43,7 +43,7 @@ const App: React.FC = () => {
       <div className='montserrat container'>
         <Routes>
           {user ? <>
-            <Route path="/" element={<Navigation user={user} />} />
+            <Route path="/" element={<NavigationBlock user={user} />} />
             <Route path="/cocktail/:id" element={<CocktailDetails />} />
             <Route path="/add" element={<NewCocktailForm />} />
           </> : <>

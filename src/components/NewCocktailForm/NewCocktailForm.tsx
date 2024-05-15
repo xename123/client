@@ -15,6 +15,7 @@ const NewCocktailForm: React.FC = () => {
     image: '',
   });
   const [message, setMessage] = useState('')
+  const [showSnackbar, setShowSnackbar] = useState(false)
   const navigation = useNavigate()
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -26,12 +27,18 @@ const NewCocktailForm: React.FC = () => {
     console.log(formData)
     if (!formData.name || !formData.ingredients || !formData.instructions || !formData.image) {
       setMessage('Please fill in all fields.');
-    } else {
-      postData(`${NODE_URL}/drinks`, formData)
-      setMessage('Added new Coctail')
+      setShowSnackbar(true)
       setTimeout(() => {
+        setShowSnackbar(false)
+      }, 1300)
+    } else {
+      postData(`${NODE_URL}/drinks`, { ...formData, ingredients: formData.ingredients.split(',') })
+      setMessage('Added new Coctail')
+      setShowSnackbar(true)
+      setTimeout(() => {
+        setShowSnackbar(false)
         navigation('/')
-      }, 1000)
+      }, 1300)
 
     }
 
@@ -44,14 +51,14 @@ const NewCocktailForm: React.FC = () => {
         <label>Name:</label>
         <input className={s.input} type="text" required name="name" placeholder='A. J.' value={formData.name} onChange={handleChange} />
         <label>Ingredients:</label>
-        <textarea className={s.textarea} name="ingredients" required placeholder='1)Ingredient 2)Ingredient' value={formData.ingredients} onChange={handleChange} />
+        <textarea className={s.textarea} name="ingredients" required placeholder='Specify ingredients separated by commas' value={formData.ingredients} onChange={handleChange} />
         <label>Instructions:</label>
         <textarea className={s.textarea} name="instructions" required placeholder='1) Instruction 2)Instruction' value={formData.instructions} onChange={handleChange} />
         <label>Image:</label>
         <input className={s.input} type="url" name="image" placeholder='https://www.www' value={formData.image} onChange={handleChange} />
         <button className={s.button} type="submit">Submit</button>
       </form>
-      {message && <Snackbar message={message} />}
+      {showSnackbar && <Snackbar message={message} />}
     </div>
   );
 };

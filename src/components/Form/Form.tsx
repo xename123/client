@@ -16,6 +16,8 @@ const RegistrationForm: React.FC<RegistrationFormnProps> = ({ setUser }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
+    const [showSnackbar, setShowSnackbar] = useState(false)
+
 
     let navigate = useNavigate();
 
@@ -25,19 +27,25 @@ const RegistrationForm: React.FC<RegistrationFormnProps> = ({ setUser }) => {
             const response = await axios.post(`${NODE_URL}/auth/register`, { username, email, password });
             if (response.status === 200) {
                 setMessage("Regist is success")
+                setShowSnackbar(true)
                 const response = await axios.post(`${NODE_URL}/auth/login`, {
                     email,
                     password,
                 });
                 setTimeout(() => {
+                    setShowSnackbar(false)
                     setUser({ username, email })
                     navigate('/')
-                }, 1000)
+                }, 1300)
                 setJWT(response.data.token);
             }
         } catch (error) {
             console.error('Error during registration:', error);
             setMessage('Error during registration. Please try again.');
+            setShowSnackbar(true)
+            setTimeout(() => {
+                setShowSnackbar(false)
+            }, 1300)
         }
     };
 
@@ -52,7 +60,7 @@ const RegistrationForm: React.FC<RegistrationFormnProps> = ({ setUser }) => {
             </form>
             <Link className={s.button} to="/">Login</Link>
 
-            {message && <Snackbar message={message} />}
+            {showSnackbar && <Snackbar message={message} />}
         </div>
     );
 };
