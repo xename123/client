@@ -25,7 +25,7 @@ const NewCocktailForm: React.FC = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(formData)
-    if (!formData.name || !formData.ingredients || !formData.instructions || !formData.image) {
+    if (!formData.name || !formData.ingredients || !formData.instructions) {
       setMessage('Please fill in all fields.');
       setShowSnackbar(true)
       setTimeout(() => {
